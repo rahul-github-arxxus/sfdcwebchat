@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <body>
+	<div class="section" id="section1">
 	<h1>Chat Now</h1>
-  
+	</div> 
+   
   <!--Embedded Service Snippet-->
-<style type='text/css'>
+  <style type='text/css'>
 	.embeddedServiceHelpButton .helpButton .uiButton {
 		background-color: #ec008c;
 		font-family: "Avenir LT Pro", sans-serif;
@@ -26,9 +28,22 @@
         border-style: unset !important;
         color: white !important;
     }
+      
+      html, body {
+		height: 100%;
+		margin: 0;
+		}
+
+		#section1 {
+			height: 90%; 
+		text-align:center; 
+			display:table;
+			width:100%;
+		}
+
+		#section1 h1 {display:table-cell; vertical-align:middle; font-size:2em !important;}
     
 </style>
-
 <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
 <script type='text/javascript'>
 	var initESW = function(gslbBaseURL) {
