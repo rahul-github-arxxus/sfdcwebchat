@@ -46,12 +46,27 @@
 </style>
 <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
 <script type='text/javascript'>
+    // read utm parameters from the URL
+    let params = {};
+    window.location.search.slice(1).split('&').forEach(elm => {
+        if (elm === '') return;
+        let spl = elm.split('=');
+        const d = decodeURIComponent;
+        params[d(spl[0])] = (spl.length >= 2 ? d(spl[1]) : true);
+    });
+    console.log('params', params);
+
+    var utmSource = params['utm_source'];
+    var utmMedium = params['utm_medium'];
+    var utmCampaign =  params['utm_campaign'];
+
 	var initESW = function(gslbBaseURL) {
 		embedded_svc.settings.displayHelpButton = true; //Or false
 		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
 
 		embedded_svc.settings.defaultMinimizedText = 'Chat with Us'; //(Defaults to Chat with an Expert)
-		embedded_svc.settings.disabledMinimizedText = 'Leave a Message'; //(Defaults to Agent Offline)
+        embedded_svc.settings.disabledMinimizedText = 'All Agents are Offline'; //(Defaults to Agent Offline)
+        embedded_svc.settings.offlineSupportMinimizedText = 'All Agents are Offline'; //(Defaults to Contact Us)
 
 		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
 		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
@@ -64,17 +79,15 @@
 		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
 		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
 		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
-        
+
         embedded_svc.settings.prepopulatedPrechatFields = {
-            Company: 'Ikon Institute of Australia',
+            Course__c: 'Ikon Institute of Australia',
             LeadSource: 'LiveChat',
-            UTM_Source__c: 'CPC',
-            UTM_Medium__c: 'google',
-            UTM_Campaign__c: 'brand',
-            detailed_lead_source__c: 'LiveChat',
+            UTM_Source__c: utmSource,
+            UTM_Medium__c: utmMedium,
+            UTM_Campaign__c: utmCampaign,
+            detailed_lead_source__c: 'LiveChat'
         };
-        
-        
 
 		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
 		embedded_svc.settings.entryFeature = 'LiveAgent';
@@ -104,9 +117,13 @@
 		};
 		document.body.appendChild(s);
 	} else {
+        
 		initESW('https://service.force.com');
+        /* var utmSource = '{!$CurrentPage.parameters.utm_source}';
+        console.log('utmSource', utmSource); */
+
+        
 	}
-    
 </script>
 
 </body>
